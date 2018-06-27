@@ -11,17 +11,16 @@
 
 ; symbolic shape x symbolic shape --> a new symbolic shape of result
 (define (Add a b)
-  (let* ([r (fs)]
+  (let* ([r (ps n m k)]
          [ignored (onnx/add a b r)])
     r))
     
 ; symbolic shape x symbolic shape x symbolic shape --> a new symbolic shape of result
 (define (Gemm a b c)
-  (let* ([y (fs)]
+  (let* ([y (ps n m k)]
          [ignored (onnx/gemm a b c y)])
     y))
     
-
 ; for convenience, wrap around some standard Rosette functions
 ;
 ; None here yet.

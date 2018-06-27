@@ -11,9 +11,10 @@
     [(define write-proc
        (make-constructor-style-printer
         (lambda (obj) 'shape)
-        (lambda (obj) (if (term? (rank obj))
-                          (shape-dims obj)
-                          (take (shape-dims obj) (rank obj))))))])
+        (lambda (obj) (list (rank obj)
+                            (if (term? (rank obj))
+                                (shape-dims obj)
+                                (take (shape-dims obj) (rank obj)))))))])
 
 ; access the rank of shape 's'
 (define (rank s)

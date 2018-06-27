@@ -37,7 +37,6 @@
     [(and (< 0 a)(= 0 b)(= a r)) #t]
     [else #f]))
   
-
 ; Reference implementation of ONNX multi-directional broadcast rules.
 ; These are rewritten above to use Racket's 'cond' which Rosette
 ; automatically translates to SMT constraints. 
@@ -104,3 +103,4 @@
          [ignored (assert (racket/equal? r ref))]
          )
     r))
+
