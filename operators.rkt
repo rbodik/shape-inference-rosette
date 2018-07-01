@@ -1,9 +1,16 @@
 #lang rosette
 
-(require "checker.rkt")
-(require "shape.rkt")
+;; Concrete shape semantics.
+;;
+;; There should be nothing symbolic here.
+;; This semantics should be tested on concrete tests. 
+
+(require "shape.rkt")    ; defines concrete shapes
+(require "checker.rkt")  ; defines concrete broadcasting semantics 
 
 (provide onnx/add onnx/gemm)
+
+; Addition is straightforward
 
 (define (onnx/add a b r)
   (assert (multi-dir-bcast a b r)))

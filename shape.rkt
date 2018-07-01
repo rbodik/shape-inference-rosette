@@ -4,17 +4,22 @@
 (require racket/list)
 (require "bound.rkt")
 
-(provide (struct-out shape) rank dim dims dims-fill)
+(provide (struct-out shape) (rename-out [shape-constructor sh]) rank dim dims)
 
 (struct shape (rank dims) #:transparent
-  #:methods gen:custom-write
-    [(define write-proc
-       (make-constructor-style-printer
-        (lambda (obj) 'shape)
-        (lambda (obj) (list (rank obj)
-                            (if (term? (rank obj))
-                                (shape-dims obj)
-                                (take (shape-dims obj) (rank obj)))))))])
+  #:property prop:custom-write
+  (lambda (shape port write?)
+    (if (term? (shape-rank shape))
+        ; the rank is a symbolic variable
+        (fprintf port (if write? "~s:[~s]" "~a:[~a]")
+                 (rank shape)
+                 (shape-dims shape))
+        ; rank is concrete
+        (fprintf port (if write? "[~s]" "[~a]")
+                 (take (shape-dims shape) (shape-rank shape)))
+        )))
+
+(define (shape-constructor lst) (shape (length lst) lst))
 
 ; access the rank of shape 's'
 (define (rank s)
@@ -26,6 +31,7 @@
       0
       (list-ref (shape-dims s) d)))
 
+; return exactly MAX-RANK dimensions of s, filling in zeros for missing dimensions 
 (define (dims s)
   (for/list ([i MAX-RANK])
     (dim s i)))
