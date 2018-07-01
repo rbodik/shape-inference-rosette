@@ -32,16 +32,13 @@ What works:
 * Add, as an example of an operator with multi-directional broadcast
 * composition of these operators
 * unknown input, intermediate, and output shapes. 
+* (update) affine shapes now work, see affine-demo.rkt.
 
 What is missing from ONNX:
 * other operators (should be trivial to add)
 * transpose flags in Gemm (also should be trivial)
 
-What may be important to add:
-* make at least one dimension run-time-known, i.e., not known at inference time.  This could be the batch dimension.
-
 What may be useful to add, but it's not clear ONNX itself demands it:
-* make multiple input dimensions be run-time-known, specifically make them affine functions `2*n+3` of some uknown input `n`. 
 * add tiling operators and others that produce new shapes. 
 
 The semantics of broadcast is defined in checker.rkt.  For example, this is all we need to say about multi-directional brodcast rules.  The inference happens for free.  The broadcast semantics should be easy to modify to other languages. 
@@ -113,3 +110,4 @@ Note that the rules invoke the one-directional brodcasting checker. Again, the c
             (= (rank y) 2)
             ))))
 ```
+
