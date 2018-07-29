@@ -111,3 +111,44 @@ Note that the rules invoke the one-directional brodcasting checker. Again, the c
             ))))
 ```
 
+## Overview of source files:
+
+The rationale for separating the implementation into the indivdual files:
+
+1) The concrete ONNX semantics is kept separate from anything that is symbolic (i.e., needed for shape inference).  The concrete semantics does not know any inference will be performed; to add additional ONNX operators, you should only have to touch (and test) the tile operators.rkt.  Overall, there are just two files with ONNX semantics:
+
+* checker.rkt  (defines the two broadcast rules)
+* operators.rkt
+
+2) Here we define concrete shapes.  
+
+* shape.rkt
+* bound.rkt
+
+And that's all you need to write sample ONNX programs check their shapes, as shown in these files:
+
+* test.rkt
+* checker-test.rkt
+
+3) The project initially supported only constant bound shapes.  Affine shapes were added later. The demos of these two inference solvers are in:
+
+* symbolic-test.rkt
+* affine-demo.rkt
+
+4) There are additional files whose only role is to wrap the functionality in a nice interface.  
+
+* constant-solver.rkt
+* affine-solver.rkt
+
+5)  Because Rosette's guts are hidden under these nice domain-specific interfaces, I included a demo that shows directly how Rosette infers affine and non-affine bounds. 
+
+* affine-experiments.rkt
+
+6) Notice how little work is needed to turn the concrete shape checker into a shape inferencer:
+
+* symbolic-shape.rkt
+* symbolic-checker.rkt
+
+7) And more tests that can serve as tutorials.  These should help you understand inference for affine shapes:
+
+* symbolic-affine-test.rkt
